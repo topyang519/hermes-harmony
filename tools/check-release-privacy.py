@@ -8,7 +8,7 @@ import re
 import subprocess
 import tarfile
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 FORBIDDEN_NAMES = {
     '.secrets', '.env', 'connection.json', 'bridge.toml', 'local.properties',
@@ -43,11 +43,12 @@ def entries(path: Path, tracked: bool):
 
 
 def scan(name: str, data: bytes, issues: list[str], depth: int = 0):
-    parts = Path(name).parts
+    normalized_name = name.replace('\\', '/')
+    parts = PurePosixPath(normalized_name).parts
     private_name = any(part in FORBIDDEN_NAMES for part in parts)
-    if name.endswith('app/entry/build-profile.json5'):
+    if parts[-3:] == ('app', 'entry', 'build-profile.json5'):
         private_name = False  # Module build options contain no signing data.
-    if private_name or name.endswith(FORBIDDEN_SUFFIXES):
+    if private_name or normalized_name.endswith(FORBIDDEN_SUFFIXES):
         issues.append(f'{name}: excluded private/generated file')
     for label, pattern in PATTERNS.items():
         if pattern.search(data):
