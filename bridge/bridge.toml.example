@@ -1,0 +1,24 @@
+# Copy to bridge.toml and set app_password. Do not commit bridge.toml.
+
+[bridge]
+host = "127.0.0.1"
+port = 7691
+app_password = ""  # Set a strong random password before starting.
+max_devices = 4
+turns_per_minute = 10
+max_recording_seconds = 120
+ping_interval_seconds = 20
+# Stop a phone turn after ten minutes without a Hermes event.
+phone_turn_timeout_seconds = 600
+# Hard ceiling, even if Hermes continues producing progress events.
+phone_turn_max_seconds = 3600
+
+[hermes]
+# Leave url/token empty to use tier-2 discovery of the live `hermes serve`
+# process. Never put HERMES_DASHBOARD_SESSION_TOKEN in this file.
+url = ""
+token = ""
+profile = ""
+source = "harmony"
+allow_spawn = false
+spawn_port = 9121

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>ai.hermes.harmony.bridge</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__REPO_ROOT__/bridge/.venv/bin/python</string>
+    <string>-m</string>
+    <string>hermes_harmony_bridge</string>
+    <string>--config</string>
+    <string>__REPO_ROOT__/bridge/bridge.toml</string>
+    <string>--host</string>
+    <string>127.0.0.1</string>
+    <string>--port</string>
+    <string>7691</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__REPO_ROOT__/bridge</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__REPO_ROOT__/bridge/logs/bridge.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__REPO_ROOT__/bridge/logs/bridge.err.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/sbin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>

@@ -1,0 +1,10 @@
+{
+  "string": [
+    { "name": "module_desc", "value": "赫默狮远程任务终端" },
+    { "name": "EntryAbility_desc", "value": "赫默狮" },
+    { "name": "EntryAbility_label", "value": "赫默狮" },
+    { "name": "microphone_reason", "value": "用于向 Hermes 录制语音任务。" },
+    { "name": "bg_reason", "value": "仅在说话时保持录音任务。" },
+    { "name": "background_connection_reason", "value": "在您发起的 Hermes 任务完成前保持与电脑连接，并在任务结束后立即停止。" }
+  ]
+}

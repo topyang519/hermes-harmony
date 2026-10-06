@@ -1,0 +1,66 @@
+# Secrets and local config — never commit
+bridge.toml
+app/build-profile.json5
+.secrets/
+*.token
+cf-access.env
+.env
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+bridge/logs/
+bridge/state/
+
+# HarmonyOS / DevEco generated artefacts
+oh_modules/
+.idea/
+**/xcuserdata/
+.preview/
+.build/
+.hvigor/
+app/**/build/
+app/**/.cxx/
+*.hap
+*.app
+local.properties
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+
+# Private runtime data, signing material, and intermediate releases
+connection.json
+*.bak
+*.backup
+*.old
+*.orig
+*.log
+*.db
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx
+*.p7b
+*.cer
+*.crt
+*.keystore
+*.jks
+*.mobileprovision
+*.ipa
+*.whl
+*.tar.gz
+.release/
+.release-build/

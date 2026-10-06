@@ -1,0 +1,3 @@
+# Copy to local.properties (gitignored) and set your installed API 26 SDK.
+# Use an absolute SDK path from your own development environment.
+# sdk.dir=/path/to/HarmonyOS/sdk

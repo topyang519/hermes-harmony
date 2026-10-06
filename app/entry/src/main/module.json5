@@ -1,0 +1,56 @@
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "EntryAbility",
+    "deviceTypes": ["phone"],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "description": "$string:EntryAbility_desc",
+        "icon": "$media:layered_image",
+        "label": "$string:EntryAbility_label",
+        "startWindowIcon": "$media:startIcon",
+        "startWindowBackground": "$color:start_window_background",
+        "backgroundModes": ["multiDeviceConnection"],
+        "exported": true,
+        "skills": [
+          {
+            "entities": ["entity.system.home"],
+            "actions": ["ohos.want.action.home"]
+          }
+        ]
+      }
+    ],
+    "extensionAbilities": [
+      {
+        "name": "HermesAgentAbility",
+        "srcEntry": "./ets/agent/HermesAgentAbility.ets",
+        "description": "通过小艺向已配对电脑上的 Hermes Agent 下达任务并返回结果",
+        "type": "agent",
+        "exported": true,
+        "metadata": [
+          { "name": "ohos.extension.agent", "resource": "$profile:agent_config" }
+        ]
+      }
+    ],
+    "requestPermissions": [
+      { "name": "ohos.permission.INTERNET" },
+      {
+        "name": "ohos.permission.MICROPHONE",
+        "reason": "$string:microphone_reason",
+        "usedScene": { "abilities": ["EntryAbility"], "when": "inuse" }
+      },
+      {
+        "name": "ohos.permission.KEEP_BACKGROUND_RUNNING",
+        "reason": "$string:background_connection_reason",
+        "usedScene": { "abilities": ["EntryAbility"], "when": "always" }
+      }
+    ]
+  }
+}

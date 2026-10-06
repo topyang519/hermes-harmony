@@ -1,0 +1,31 @@
+services:
+  relay:
+    build:
+      context: ..
+      dockerfile: deploy/relay.Dockerfile
+    restart: unless-stopped
+    expose:
+      - "8765"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/healthz', timeout=2)"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+  tls:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      relay:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      RELAY_DOMAIN: ${RELAY_DOMAIN:?set RELAY_DOMAIN to a hostname pointing at this server}
+    volumes:
+      - ./relay.Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+volumes:
+  caddy_data:
+  caddy_config:

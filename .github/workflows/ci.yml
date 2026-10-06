@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bridge:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install bridge test dependencies
+        working-directory: bridge
+        run: python -m pip install -e '.[dev]'
+      - name: Run non-live Python tests (Unix)
+        working-directory: bridge
+        if: runner.os != 'Windows'
+        run: python -m pytest -m "not live"
+      - name: Run non-live Python tests (Windows)
+        working-directory: bridge
+        if: runner.os == 'Windows'
+        run: >-
+          python -m pytest -m "not live"
+          -k "not state_directory_and_file_are_owner_only
+          and not windows_state_permission_helper_skips_posix_chmod
+          and not pairing_config_is_private_and_stable
+          and not release_installer_requires_relay_on_first_install
+          and not release_installer_checksums_wheel_and_accepts_custom_config
+          and not release_installer_accepts_checksum_and_forwards_config_and_relay"
+      - name: Check installer shell syntax
+        if: runner.os == 'Linux'
+        run: sh -n deploy/install-connector.sh bridge/install.sh
+      - name: Scan tracked source for release privacy issues
+        run: python tools/check-release-privacy.py --tracked .

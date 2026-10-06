@@ -1,0 +1,43 @@
+name: Build release assets
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-connector-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install wheel builder
+        run: python -m pip install build
+      - name: Build the connector wheel and release assets
+        run: |
+          set -eu
+          OUT="$RUNNER_TEMP/hermes-harmony-release-assets"
+          mkdir -p "$OUT"
+          python -m build --wheel --outdir "$OUT" bridge
+          cp deploy/install-connector.sh "$OUT/install.sh"
+          cp deploy/install-connector.ps1 "$OUT/install.ps1"
+          cd "$OUT"
+          sha256sum hermes_harmony_bridge-0.3.8-py3-none-any.whl install.sh install.ps1 > SHA256SUMS
+          cat SHA256SUMS
+      - name: Scan built release assets for privacy issues
+        run: python tools/check-release-privacy.py "$RUNNER_TEMP/hermes-harmony-release-assets"
+      - name: Upload release assets for publication
+        uses: actions/upload-artifact@v4
+        with:
+          name: hermes-harmony-${{ github.ref_name }}-release-assets
+          path: ${{ runner.temp }}/hermes-harmony-release-assets/*
+          if-no-files-found: error
+          retention-days: 30
+
+  # GitHub-hosted Linux runners do not include DevEco Studio or the
+  # HarmonyOS SDK. HAP builds remain a manual DevEco/API 26+ release check.

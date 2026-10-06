@@ -1,0 +1,38 @@
+name: HermesHarmony
+options:
+  bundleIdPrefix: ai.hermes
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    MARKETING_VERSION: "0.2.4"
+    CURRENT_PROJECT_VERSION: "6"
+targets:
+  HermesHarmony:
+    type: application
+    platform: iOS
+    sources:
+      - path: HermesHarmony
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.hermes.harmony.ios
+        INFOPLIST_KEY_CFBundleDisplayName: Hermes
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: Hermes needs the microphone for voice tasks.
+        INFOPLIST_KEY_NSLocalNetworkUsageDescription: Hermes uses the local network to reach the Mac bridge on the same Wi‑Fi.
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+    info:
+      path: HermesHarmony/Info.plist
+      properties:
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        UIStatusBarStyle: UIStatusBarStyleLightContent
+        UIViewControllerBasedStatusBarAppearance: true

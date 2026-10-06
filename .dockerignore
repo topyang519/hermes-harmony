@@ -1,0 +1,7 @@
+**
+!bridge/
+!bridge/pyproject.toml
+!bridge/src/
+!bridge/src/**
+!deploy/
+!deploy/relay.Dockerfile

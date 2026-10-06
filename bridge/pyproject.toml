@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-harmony-bridge"
+version = "0.3.8"
+description = "HarmonyOS phone <-> local Hermes Agent bridge (v2 wire protocol)"
+requires-python = ">=3.11"
+dependencies = [
+    "aiohttp>=3.9,<4",
+    "qrcode>=7,<9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+]
+
+[project.scripts]
+hermes-harmony-bridge = "hermes_harmony_bridge.server:main"
+hermes-harmony-connect = "hermes_harmony_bridge.connect:main"
+hermes-harmony-relay = "hermes_harmony_bridge.relay:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src", "tools", "tests"]
+markers = ["live: talks to a real hermes serve process"]
+addopts = ["-m", "not live", "-q", "--disable-warnings"]

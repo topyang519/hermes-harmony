@@ -1,0 +1,12 @@
+{
+  "modelVersion": "5.0.0",
+  "name": "hermes_harmony",
+  "version": "0.6.8",
+  "description": "HarmonyOS remote terminal for a local Hermes Agent. HAP build needs DevEco Studio + SDK.",
+  "main": "",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "dynamicDependencies": {}
+}

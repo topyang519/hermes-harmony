@@ -1,0 +1,6 @@
+# Keep rules for release HAP. Obfuscation is disabled in entry/build-profile.json5
+# until a signed release pipeline exists.
+-enable-property-obfuscation
+-enable-toplevel-obfuscation
+-enable-filename-obfuscation
+-enable-export-obfuscation

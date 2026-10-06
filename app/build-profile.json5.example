@@ -1,0 +1,36 @@
+// Copy to build-profile.json5 for an unsigned build, or let DevEco Studio
+// generate a local signing profile. The real file is gitignored.
+{
+  app: {
+    products: [
+      {
+        name: 'default',
+        compatibleSdkVersion: '26.0.0',
+        targetSdkVersion: '26.0.0',
+        runtimeOS: 'HarmonyOS',
+        buildOption: {
+          strictMode: {
+            caseSensitiveCheck: true,
+            useNormalizedOHMUrl: true,
+          },
+        },
+      },
+    ],
+    buildModeSet: [
+      { name: 'debug' },
+      { name: 'release' },
+    ],
+  },
+  modules: [
+    {
+      name: 'entry',
+      srcPath: './entry',
+      targets: [
+        {
+          name: 'default',
+          applyToProducts: ['default'],
+        },
+      ],
+    },
+  ],
+}
