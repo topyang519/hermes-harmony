@@ -42,5 +42,23 @@ jobs:
       - name: Check installer shell syntax
         if: runner.os == 'Linux'
         run: sh -n deploy/install-connector.sh bridge/install.sh
+      - name: Check Windows installer syntax and first-install relay requirement
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $scriptPath = Join-Path $env:GITHUB_WORKSPACE 'deploy/install-connector.ps1'
+          $tokens = $null
+          $parseErrors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$tokens, [ref]$parseErrors) | Out-Null
+          if ($parseErrors) { throw ($parseErrors | Out-String) }
+
+          $config = Join-Path $env:RUNNER_TEMP 'hermes-harmony-ci-first-install-missing.json'
+          Remove-Item -LiteralPath $config -Force -ErrorAction SilentlyContinue
+          try {
+            & $scriptPath -Config $config
+            throw 'Installer unexpectedly accepted a first install without -Relay.'
+          } catch {
+            if ($_.Exception.Message -notmatch '^First install requires -Relay') { throw }
+          }
       - name: Scan tracked source for release privacy issues
         run: python tools/check-release-privacy.py --tracked .

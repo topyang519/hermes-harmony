@@ -163,7 +163,11 @@ async def test_phone_handshake_does_not_wait_for_hermes(tmp_path):
     session = phone(tmp_path, fake)
     session._helloed = False
     await asyncio.wait_for(session._on_hello({'proto': 2, 'dev': 'phone'}), timeout=0.1)
-    ready = json.loads(session.ws.send_str.call_args.args[0])
+    frames = [json.loads(call.args[0]) for call in session.ws.send_str.call_args_list]
+    ready_index = next(index for index, frame in enumerate(frames) if frame['t'] == 'ready')
+    assert ready_index == 0
+    assert [frame['t'] for frame in frames[ready_index + 1:]] in ([], ['voice_capabilities'])
+    ready = frames[ready_index]
     assert ready['t'] == 'ready'
     assert ready['hermes'] is False
     fake.ensure_connected.assert_not_awaited()
@@ -298,14 +302,17 @@ async def test_disconnect_cancels_auto_tts_task(tmp_path):
 @pytest.mark.asyncio
 async def test_turn_watchdog_interrupts_and_notifies():
     fake = FakeHermes()
-    notify = AsyncMock()
+    notified = asyncio.Event()
+    notify = AsyncMock(side_effect=lambda _sid: notified.set())
     watchdog = TurnWatchdog(fake, 15, notify)
     watchdog.timeout = 0.01
     watchdog.arm('sid')
-    await asyncio.sleep(0.03)
-    assert fake.interrupts == ['sid']
-    notify.assert_awaited_once_with('sid')
-    await watchdog.close()
+    try:
+        await asyncio.wait_for(notified.wait(), timeout=1)
+        assert fake.interrupts == ['sid']
+        notify.assert_awaited_once_with('sid')
+    finally:
+        await watchdog.close()
 
 
 @pytest.mark.asyncio
