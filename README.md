@@ -31,7 +31,6 @@ Invoke-WebRequest https://github.com/topyang519/hermes-harmony/releases/latest/d
 
 | 路径 | 内容 |
 | --- | --- |
-| `app/` | ArkTS / ArkUI 手机客户端、小艺 A2A 扩展 |
 | `bridge/` | Python 网关、电脑连接器、WebSocket 中继及测试 |
 | `deploy/` | GitHub 安装脚本、通用中继部署模板 |
 | `ios/` | iOS 原型 |
